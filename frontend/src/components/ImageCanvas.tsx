@@ -87,11 +87,11 @@ export default function ImageCanvas() {
       if (hasInitialized.current) {
         return;
       }
-      
+
       if (!dataUrl && !navFile) {
         return;
       }
-      
+
       hasInitialized.current = true;
 
       // Caso 1: Tenemos un File directamente
@@ -108,7 +108,7 @@ export default function ImageCanvas() {
       if (dataUrl) {
         // Usar el dataUrl directamente - ImageSelector ya lo convirtió si era necesario
         setDisplayUrl(dataUrl);
-        
+
         // También obtener el blob para análisis posterior (ROI)
         fetch(dataUrl)
           .then(function (resp) {
@@ -122,7 +122,7 @@ export default function ImageCanvas() {
           });
       }
     },
-    [dataUrl, navFile, revokeLastObjectUrl, setDisplayUrl, setOriginalBlob]
+    [dataUrl, navFile, revokeLastObjectUrl, setDisplayUrl, setOriginalBlob],
   );
 
   useEffect(
@@ -144,7 +144,7 @@ export default function ImageCanvas() {
         img.removeEventListener("error", onerr);
       };
     },
-    [displayUrl, setImageElem]
+    [displayUrl, setImageElem],
   );
 
   useEffect(
@@ -153,7 +153,7 @@ export default function ImageCanvas() {
         revokeLastObjectUrl();
       };
     },
-    [revokeLastObjectUrl]
+    [revokeLastObjectUrl],
   );
 
   const handleClick = useCallback(
@@ -183,21 +183,24 @@ export default function ImageCanvas() {
         return newPoints;
       });
     },
-    [imageElem, isClosed, points, setHoverPos, setIsClosed, setPoints]
+    [imageElem, isClosed, points, setHoverPos, setIsClosed, setPoints],
   );
 
-  const handleMouseMove = useCallback(function () {
-    if (!stageRef.current) {
-      setHoverPos(null);
-      return;
-    }
-    const pos = stageRef.current.getPointerPosition();
-    if (!pos) {
-      setHoverPos(null);
-      return;
-    }
-    setHoverPos({ x: pos.x, y: pos.y });
-  }, [setHoverPos]);
+  const handleMouseMove = useCallback(
+    function () {
+      if (!stageRef.current) {
+        setHoverPos(null);
+        return;
+      }
+      const pos = stageRef.current.getPointerPosition();
+      if (!pos) {
+        setHoverPos(null);
+        return;
+      }
+      setHoverPos({ x: pos.x, y: pos.y });
+    },
+    [setHoverPos],
+  );
 
   function handleUndo() {
     setPoints(function (p) {
@@ -276,14 +279,14 @@ export default function ImageCanvas() {
         setMinIntensity(typeof json.min === "number" ? json.min : null);
         setMaxIntensity(typeof json.max === "number" ? json.max : null);
         setAreaPixels(
-          typeof json.area === "number" ? Math.round(json.area) : null
+          typeof json.area === "number" ? Math.round(json.area) : null,
         );
         setHistogram(
           Array.isArray(json.histogram)
             ? json.histogram.map(function (v: any) {
                 return Number(v) || 0;
               })
-            : null
+            : null,
         );
         setLoading(false);
       })
@@ -736,7 +739,7 @@ export default function ImageCanvas() {
                               >
                                 {val}
                               </text>
-                            </g>
+                            </g>,
                           );
                         }
 
@@ -787,7 +790,7 @@ export default function ImageCanvas() {
                               fill="#2563eb"
                               opacity={0.9}
                               onMouseEnter={function (
-                                e: React.MouseEvent<SVGRectElement>
+                                e: React.MouseEvent<SVGRectElement>,
                               ) {
                                 setHoveredBar({
                                   idx: idx,
